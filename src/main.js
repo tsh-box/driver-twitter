@@ -111,7 +111,7 @@ var T = null;
 
 var vendor = "databox";
 
-let tsc = databox.NewTimeSeriesClient(DATABOX_ZMQ_ENDPOINT, false);
+let tsc = databox.NewTimeSeriesBlobClient(DATABOX_ZMQ_ENDPOINT, false);
 let kvc = databox.NewKeyValueClient(DATABOX_ZMQ_ENDPOINT, false);
 
 let timeLine = databox.NewDataSourceMetadata();
@@ -147,7 +147,7 @@ userRetweet.DataSourceID = 'twitterRetweet';
 userRetweet.StoreType = 'ts';
 
 let userFav = databox.NewDataSourceMetadata();
-userFav.Description = 'Twitter users favorite tweets';
+userFav.Description = 'Twitter users favourites tweets';
 userFav.ContentType = 'application/json';
 userFav.Vendor = 'Databox Inc.';
 userFav.DataSourceType = 'twitterFavorite';
@@ -277,7 +277,7 @@ function stopAllStreams () {
 function getSettings () {
   datasourceid = 'twitterSettings';
   return new Promise((resolve,reject)=>{
-    kvc.Read(datasourceid)
+    kvc.Read(datasourceid,"settings")
     .then((settings)=>{
       if(Object.keys(settings).length == 0) {
          //return defaults
@@ -303,7 +303,7 @@ function getSettings () {
 function setSettings (settings) {
  let datasourceid = 'twitterSettings';
  return new Promise ((resolve,reject)=>{
-  kvc.Write(datasourceid, settings)
+  kvc.Write(datasourceid, "settings", settings)
     .then(()=>{
       console.log('[setSettings] settings saved', settings);
       resolve(settings);
